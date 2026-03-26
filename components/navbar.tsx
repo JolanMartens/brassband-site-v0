@@ -26,8 +26,7 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem[] }) => {
     <header className="bg-background sticky top-0 z-50 shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4">
         <nav className="flex flex-1 items-center justify-between font-medium md:justify-center md:gap-8 lg:gap-16">
-          {/* Desktop Links (Left) */}
-          <div className="hidden md:flex gap-8 lg:gap-16">
+          <div className="hidden md:flex gap-8 lg:gap-16 bg-background">
             {navigationData.slice(0, 2).map((item) => {
               const isActive = pathname === item.href;
               return (
@@ -46,10 +45,9 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem[] }) => {
             })}
           </div>
 
-          {/* Optimized Logo */}
           <Link href="/" className="flex-shrink-0">
             <Image
-              src="/logo.png"
+              src="/logo-transparent.png"
               alt="Company Logo"
               width={80}
               height={80}
@@ -58,7 +56,6 @@ const Navbar = ({ navigationData }: { navigationData: NavigationItem[] }) => {
             />
           </Link>
 
-          {/* Desktop Links (Right) */}
           <div className="hidden md:flex gap-8 lg:gap-16">
             {navigationData.slice(2, 4).map((item) => {
               const isActive = pathname === item.href;

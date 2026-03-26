@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const navLinks = [
   { title: "Home", href: "/" },
   { title: "Over Ons", href: "/over-ons" },
-  { title: "Gallerij", href: "/gallerij" },
+  { title: "Galerij", href: "/galerij" },
   { title: "Contact", href: "/contact" },
 ];
 
@@ -41,9 +41,8 @@ export default function RootLayout({
         inter.variable,
       )}
     >
-      <body className="min-h-full flex flex-col bg-zinc-50 dark:bg-black">
+      <body className="min-h-full flex flex-col bg-background text-foreground">
         <Navbar navigationData={navLinks} />
-
         <main className="flex-1">{children}</main>
       </body>
     </html>

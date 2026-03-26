@@ -2,11 +2,39 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
+import InfoGrid, { InfoCard } from "@/components/info-grid";
+
+const homepageCards: InfoCard[] = [
+  {
+    id: 1,
+    title: "Onvergetelijke Muziekervaringen",
+    description:
+      "Van klassieke meesterwerken tot moderne arrangementen, onze brassband brengt een breed scala aan muziek tot leven. Elk optreden is een unieke ervaring die je niet wilt missen.",
+  },
+  {
+    id: 2,
+    title: "Lorem Ipsum",
+    description:
+      "lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    id: 3,
+    title: "Lorem Ipsum",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+  },
+  {
+    id: 4,
+    title: "Onze Historie",
+    description:
+      "Klein tekstje over de geschiedenis van Brassband Panta Rhei. Niet te lang, maar wel informatief en boeiend.",
+  },
+];
 
 export default function Home() {
   return (
     <div className="flex flex-col min-h-[calc(100vh-80px)]">
-      <section className="relative flex-1 flex flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8 overflow-hidden">
+      <section className="relative flex-1 flex flex-col items-center justify-center px-4 py-20 text-center sm:px-6 lg:px-8 overflow-hidden min-h-screen">
         <div className="absolute inset-0 z-0">
           <Image
             src="/hero-small.jpg"
@@ -27,17 +55,18 @@ export default function Home() {
           />
 
           <div className="absolute inset-0 bg-black/60 dark:bg-black/70"></div>
+          <div className="absolute inset-x-0 bottom-0 h-50 bg-gradient-to-t from-background to-transparent dark:from-gray-900 pointer-events-none"></div>
         </div>
 
         <div className="relative z-10 flex flex-col items-center">
           <div className="mb-8 inline-flex items-center rounded-full border border-white/20 bg-white/10 backdrop-blur-sm px-3 py-1 text-sm font-medium text-white">
-            <span className="flex h-2 w-2 rounded-full bg-primary mr-2 animate-pulse"></span>
+            <span className="flex h-2 w-2 rounded-full mr-2 animate-pulse bg-blue-500"></span>
             Concert op 15 juni in de Grote Kerk, Den Haag
           </div>
 
-          <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl max-w-4xl">
+          <h1 className="font-newsreader text-5xl font-extrabold text-white sm:text-8xl lg:text-9xl max-w-6xl">
             Brassband <br className="hidden sm:block" />
-            <span className="text-blue-500">Panta Rhei</span>
+            <span className="text-primary">Panta Rhei</span>{" "}
           </h1>
 
           <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-200 sm:text-xl">
@@ -49,7 +78,7 @@ export default function Home() {
             <Button
               asChild
               size="lg"
-              className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-md px-8"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground w-full sm:w-auto text-md px-8"
             >
               <Link href="/over-ons">
                 Wie zijn wij?
@@ -63,19 +92,23 @@ export default function Home() {
               size="lg"
               className="w-full sm:w-auto text-md px-8"
             >
-              <Link href="/gallerij">Gallerij</Link>
+              <Link href="/galerij">Galerij</Link>
             </Button>
           </div>
         </div>
       </section>
-      <div className="bg-zinc-100 dark:bg-zinc-900 py-12 px-12">
-        <h2 className="text-3xl font-bold mb-4">Panta Rhei</h2>
-        <p>
-          Brassband Panta Rhei is een orkest die zijn oorsprong heeft in Gent en
-          is opgericht in samenwerking met de academie voor muziek, woord en
-          dans te Gent.
-        </p>
-      </div>
+      <div className="h-20"></div>
+      <section className="py-6 px-12">
+        <div className="container mx-auto">
+          <div className="flex flex-col items-start py-6">
+            <h2 className="font-newsreader text-4xl sm:text-5xl lg:text-6xl text-foreground mb-3">
+              Wat We Doen
+            </h2>
+            <div className="h-1 w-24 bg-amber-500 rounded-sm"></div>
+          </div>
+          <InfoGrid cards={homepageCards} />
+        </div>
+      </section>
     </div>
   );
 }
