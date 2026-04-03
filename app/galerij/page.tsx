@@ -9,8 +9,10 @@ export const metadata: Metadata = {
 export default function GallerijPage() {
   return (
     <div className="container mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-6">Galerij</h1>
-      <p className="text-muted-foreground">Galerij page...</p>
+      <h1 className="text-6xl font-bold mb-6 font-newsreader">Galerij</h1>
+      <p className="text-muted-foreground">
+        Welkom in onze galerij! Bekijk onze foto's en video's.
+      </p>
     </div>
   );
 }

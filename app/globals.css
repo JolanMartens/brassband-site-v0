@@ -36,7 +36,7 @@
 
 :root {
   /* YOUR NEW GLOBAL BACKGROUND AND TEXT */
-  --background: oklch(0.1793 0.0237 268.6); 
+  --background: oklch(0.1793 0.0237 268.6);
   --foreground: oklch(0.985 0 0);
 
   --card-light: oklch(0.250 0 0);    
