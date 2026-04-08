@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 type GalleryImageGridProps = {
@@ -43,6 +44,19 @@ export function GalleryImageGrid({
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [hasLightboxOpen, images.length]);
+
+  useEffect(() => {
+    if (activeIndex === null || images.length < 2) return;
+
+    const previousIndex = (activeIndex - 1 + images.length) % images.length;
+    const nextIndex = (activeIndex + 1) % images.length;
+    const preloadTargets = [images[previousIndex], images[nextIndex]];
+
+    preloadTargets.forEach((src) => {
+      const preloadImage = new window.Image();
+      preloadImage.src = src;
+    });
+  }, [activeIndex, images]);
 
   const goPrevious = () => {
     setActiveIndex((prev) => {
@@ -90,12 +104,16 @@ export function GalleryImageGrid({
             onClick={() => setActiveIndex(index)}
             className="overflow-hidden rounded-md border text-left transition hover:opacity-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
           >
-            <div className="flex h-72 items-center justify-center p-2">
-              <img
+            <div className="relative h-72 p-2">
+              <Image
                 src={src}
                 alt={`${eventTitle} foto ${index + 1}`}
-                loading="lazy"
-                className="max-h-full w-auto max-w-full rounded-sm object-contain"
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                priority={index < 3}
+                loading={index < 3 ? "eager" : "lazy"}
+                quality={75}
+                className="rounded-sm object-contain p-2"
               />
             </div>
           </button>
@@ -154,10 +172,15 @@ export function GalleryImageGrid({
             onTouchEnd={handleTouchEnd}
           >
             <div className="flex w-full max-w-[94vw] flex-col items-center gap-4">
-              <img
+              <Image
                 src={images[activeIndex]}
                 alt={`${eventTitle} foto ${activeIndex + 1}`}
-                className="max-h-[75vh] max-w-full object-contain"
+                width={1920}
+                height={1280}
+                sizes="94vw"
+                priority
+                quality={85}
+                className="max-h-[75vh] w-auto max-w-full object-contain"
               />
 
               <div className="w-full overflow-x-auto pb-1">
@@ -174,9 +197,14 @@ export function GalleryImageGrid({
                           : "border-white/20 opacity-80 hover:opacity-100"
                       }`}
                     >
-                      <img
+                      <Image
                         src={src}
                         alt={`${eventTitle} thumbnail ${index + 1}`}
+                        width={80}
+                        height={56}
+                        sizes="80px"
+                        loading="lazy"
+                        quality={60}
                         className="h-14 w-20 object-cover"
                       />
                     </button>
