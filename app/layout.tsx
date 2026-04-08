@@ -23,7 +23,7 @@ const navLinks = [
   { title: "Home", href: "/" },
   { title: "Over Ons", href: "/over-ons" },
   { title: "Galerij", href: "/galerij" },
-  { title: "Contact", href: "/contact" },
+  { title: "Tickets", href: "/tickets" },
 ];
 
 export default function RootLayout({
