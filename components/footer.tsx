@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="bg-secondary border-t border-muted py-6 mt-12">
+    <footer className="border-t-2 py-6 mt-12">
       <div className="container flex mx-auto px-4 text-center items-center justify-center gap-8 mb-4">
         <img
           src="/sponsors/logo-cultuur-gent.png"
@@ -13,7 +13,7 @@ export default function Footer() {
           className="w-auto h-10"
         />
         <img
-          src="/sponsors/logo-de-poel.avif"
+          src="/sponsors/logo-de-poel.png"
           alt="logo de poel"
           className="w-auto h-10"
         />
