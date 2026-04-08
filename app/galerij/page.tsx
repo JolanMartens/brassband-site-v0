@@ -1,6 +1,7 @@
 import { Metadata } from "next";
 import fs from "node:fs/promises";
 import path from "node:path";
+import { list } from "@vercel/blob";
 
 import {
   Accordion,
@@ -25,6 +26,9 @@ type EventJson = {
   date?: string;
   location?: string;
   description?: string;
+  blobPrefix?: string;
+  images?: string[];
+  videos?: string[];
 };
 
 type GalleryEvent = {
@@ -65,6 +69,41 @@ async function getFilesByType(
   }
 }
 
+async function getBlobFilesByType(
+  prefix: string,
+  extensions: Set<string>,
+): Promise<string[]> {
+  const token = process.env.BLOB_READ_WRITE_TOKEN;
+  if (!token) return [];
+
+  try {
+    const urls: string[] = [];
+    let cursor: string | undefined;
+
+    do {
+      const result = await list({
+        token,
+        prefix,
+        cursor,
+        limit: 1000,
+      });
+
+      const matchingUrls = result.blobs
+        .filter((blob) =>
+          extensions.has(path.extname(blob.pathname).toLowerCase()),
+        )
+        .map((blob) => blob.url);
+
+      urls.push(...matchingUrls);
+      cursor = result.hasMore ? result.cursor : undefined;
+    } while (cursor);
+
+    return urls.sort((a, b) => a.localeCompare(b));
+  } catch {
+    return [];
+  }
+}
+
 async function getGalleryEvents(): Promise<GalleryEvent[]> {
   const galleryRoot = path.join(process.cwd(), "public", "galerij");
 
@@ -89,17 +128,48 @@ async function getGalleryEvents(): Promise<GalleryEvent[]> {
           eventJson = {};
         }
 
-        const images = await getFilesByType(
+        const localImages = await getFilesByType(
           path.join(eventRoot, "images"),
           `${publicEventRoot}/images`,
           MEDIA_EXTENSIONS.images,
         );
 
-        const videos = await getFilesByType(
+        const localVideos = await getFilesByType(
           path.join(eventRoot, "videos"),
           `${publicEventRoot}/videos`,
           MEDIA_EXTENSIONS.videos,
         );
+
+        const blobPrefix = eventJson.blobPrefix ?? `galerij/${slug}`;
+        const blobImages = await getBlobFilesByType(
+          `${blobPrefix}/images/`,
+          MEDIA_EXTENSIONS.images,
+        );
+        const blobVideos = await getBlobFilesByType(
+          `${blobPrefix}/videos/`,
+          MEDIA_EXTENSIONS.videos,
+        );
+
+        const jsonImages = eventJson.images?.filter(
+          (value) => typeof value === "string",
+        );
+        const jsonVideos = eventJson.videos?.filter(
+          (value) => typeof value === "string",
+        );
+
+        // Priority: explicit URLs in event.json -> Blob folder listing -> local fallback.
+        const images =
+          jsonImages && jsonImages.length > 0
+            ? jsonImages
+            : blobImages.length > 0
+              ? blobImages
+              : localImages;
+        const videos =
+          jsonVideos && jsonVideos.length > 0
+            ? jsonVideos
+            : blobVideos.length > 0
+              ? blobVideos
+              : localVideos;
 
         return {
           slug,
